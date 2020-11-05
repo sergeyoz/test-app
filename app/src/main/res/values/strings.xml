@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">VKFeed</string>
+    <string name="phone_or_email_hint">Телефон или email</string>
+    <string name="password_hint">Пароль</string>
+    <string name="sms_code_hint">SMS-код</string>
+    <string name="enter">Войти</string>
+    <string name="greeting_text">Добро пожаловать в VKFeed.\n Приложение для просмотра вашей новостной ленты.</string>
+    <string name="retry">Повторить</string>
+    <string name="retry_message">Произошла ошибка.\nПожалуйста, повторите попытку</string>
+    <string name="news_title">Новость</string>
+    <string name="like">Like</string>
+</resources>

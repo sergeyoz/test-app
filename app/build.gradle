@@ -1,0 +1,109 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.example.vkfeed"
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        buildConfigField 'int', 'API_APP_ID', getProperties("app_id")
+        buildConfigField 'String', 'CLIENT_SECRET', getProperties("client_secret")
+        buildConfigField 'String', 'API_VERSION', getProperties("api_version")
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "com.google.android.material:material:${versions.material}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraint_layout}"
+    implementation "androidx.recyclerview:recyclerview:${versions.recycler_view}"
+    implementation "androidx.multidex:multidex:${versions.multidex}"
+
+    //Logging
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
+    //ImageLoader
+    implementation "io.coil-kt:coil:${versions.koil}"
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.moshi:moshi-kotlin:1.11.0"
+    implementation 'com.squareup.moshi:moshi-adapters:1.11.0'
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
+    implementation "com.squareup.retrofit2:converter-moshi:${versions.moshi_converter}"
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.logging_interceptor}"
+
+    //Arcitecture Components
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.archLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.archLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.archLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${versions.archLifecycle}"
+
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.reflect}"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "androidx.test:runner:1.1.1"
+    testImplementation "org.hamcrest:hamcrest-all:${versions.hamcrest}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
+    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
+
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+def getProperties(String propName) {
+    def propsFile = rootProject.file('config-fields.properties')
+
+    if (propsFile.exists()) {
+        def props = new Properties()
+
+        FileInputStream fis
+        try {
+            fis = new FileInputStream(propsFile)
+            props.load(fis)
+
+            def value = props[propName]
+            fis.close()
+            return value
+        } finally {
+            if (fis != null) fis.close()
+        }
+    } else {
+        throw new GradleException('File config-fields.properties not found')
+    }
+}
